@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WhatsApp Blast</title>
+  <script>
+    async function checkSession() {
+      const res = await fetch('/status');
+      const data = await res.json();
+
+      if (data.ready) {
+        // Sudah login, langsung redirect ke /form
+        window.location.href = "/form";
+      } else {
+        // Belum login, redirect ke QR / halaman koneksi
+        window.location.href = "/qr-page.html"; // bisa kamu custom
+      }
+    }
+
+    window.onload = checkSession;
+  </script>
+</head>
+<body>
+  <p>🔄 Mengecek sesi WhatsApp...</p>
+</body>
+</html>

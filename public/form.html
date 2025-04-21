@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Blast - Form</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; text-align: center; }
+    input[type="file"], input[type="text"] { margin: 10px; padding: 10px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>📤 WhatsApp Blast</h2>
+  <form id="form">
+    <input type="file" name="file" required><br><br>
+    <input type="text" name="adminNumber" placeholder="Nomor Admin (628xxxx)" required><br><br>
+    <button type="submit">Kirim Blast</button>
+  </form>
+
+  <br><hr><br>
+
+  <button id="logoutBtn" style="background-color: #e74c3c; color: white;">🔒 Logout</button>
+
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const res = await fetch('/blast', { method: 'POST', body: formData });
+      const result = await res.json();
+      document.getElementById('result').innerText = result.status || 'Terjadi kesalahan.';
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      const confirmLogout = confirm('Yakin ingin logout dari WhatsApp?');
+      if (!confirmLogout) return;
+
+      // Kirim request logout
+      const res = await fetch('/logout');
+      const result = await res.json();
+      
+      // Menampilkan status
+      document.getElementById('result').innerText = result.status || 'Terjadi kesalahan saat logout.';
+
+      // Redirect setelah logout dan restart client
+      if (result.status && result.status.includes('Berhasil logout')) {
+        window.location.href = '/'; // Redirect ke halaman root setelah logout
+      }
+    });
+  </script>
+</body>
+</html>

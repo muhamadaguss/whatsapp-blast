@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WhatsApp Blast</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; text-align: center; }
+    #qr { display: none; margin-bottom: 2em; }
+    #start-btn { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>🚀 WhatsApp Blast</h2>
+  <button id="start-btn">Start</button>
+
+  <div id="qr">Loading QR...</div>
+
+  <script>
+    document.getElementById('start-btn').addEventListener('click', () => {
+      document.getElementById('start-btn').style.display = 'none';  // Hide the start button
+      getQR();  // Start fetching QR
+    });
+
+    async function getQR() {
+      const res = await fetch('/qr?t=' + new Date().getTime(), { cache: "no-store" });
+      const data = await res.json();
+      if (data.ready) {
+        document.getElementById('qr').innerHTML = '✅ WhatsApp sudah login!';
+        document.getElementById('qr').style.display = 'block';  // Show the QR code
+        setTimeout(() => {
+          // Tahan selama 3 detik
+          window.location.href = "/form";  // Redirect ke form setelah 3 detik
+        }, 3000);
+      } else {
+        document.getElementById('qr').innerHTML = `<img src="${data.qr}" width="300" />`;
+        document.getElementById('qr').style.display = 'block';  // Show the QR code
+        setTimeout(getQR, 3000);  // Re-fetch QR code every 3 seconds
+      }
+    }
+  </script>
+</body>
+</html>
