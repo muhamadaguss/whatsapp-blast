@@ -1,7 +1,8 @@
 FROM node:18-slim
 
-# Install Chromium dependencies
+# Install dependencies for Puppeteer Chromium
 RUN apt-get update && apt-get install -y \
+  wget \
   ca-certificates \
   fonts-liberation \
   libappindicator3-1 \
@@ -17,25 +18,18 @@ RUN apt-get update && apt-get install -y \
   libxcomposite1 \
   libxdamage1 \
   libxrandr2 \
-  libdrm2 \
   libxshmfence1 \
   libgbm1 \
   xdg-utils \
-  wget \
   --no-install-recommends && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Create app directory
+# Set workdir
 WORKDIR /app
 
-# Copy project files
+# Copy and install deps
 COPY . .
 
-# Install dependencies
 RUN npm install
 
-# Force Puppeteer to use --no-sandbox (just in case)
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
-
-# Start the app with node
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
