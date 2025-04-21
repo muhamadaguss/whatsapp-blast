@@ -35,4 +35,4 @@ COPY . .
 RUN npm install
 
 # Jalankan aplikasi
-CMD ["node", "index.js"]
+CMD ["node", "server.js"]
