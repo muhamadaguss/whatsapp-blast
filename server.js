@@ -18,10 +18,13 @@ let adminChatId = '';
 let client = null;
 const sentMessagesMap = new Map(); // Menyimpan ID pesan untuk tracking ack
 
+const chromiumPath = '/usr/bin/chromium';
+
 function createNewClient() {
   client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: { headless: true },
+    executablePath: chromiumPath,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox'

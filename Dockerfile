@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
   libxshmfence1 \
   libgbm1 \
   xdg-utils \
+  chromium \
   --no-install-recommends && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
