@@ -1,8 +1,7 @@
 FROM node:18-slim
 
-# Install dependencies for Puppeteer Chromium
+# Install Chromium dependencies
 RUN apt-get update && apt-get install -y \
-  wget \
   ca-certificates \
   fonts-liberation \
   libappindicator3-1 \
@@ -21,16 +20,24 @@ RUN apt-get update && apt-get install -y \
   libxshmfence1 \
   libgbm1 \
   xdg-utils \
-  chromium-browser \
+  wget \
+  unzip \
   --no-install-recommends && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set workdir
+# Download Chromium (stable snapshot)
+RUN wget https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1181205/chrome-linux.zip && \
+    unzip chrome-linux.zip && \
+    mv chrome-linux /opt/chromium && \
+    ln -s /opt/chromium/chrome /usr/bin/chromium-browser && \
+    rm chrome-linux.zip
+
+# Set env var for Puppeteer
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# Set workdir & install app
 WORKDIR /app
-
-# Copy and install deps
 COPY . .
-
 RUN npm install
 
 CMD ["npm", "start"]
