@@ -18,7 +18,7 @@ let adminChatId = '';
 let client = null;
 const sentMessagesMap = new Map(); // Menyimpan ID pesan untuk tracking ack
 
-const chromiumPath = '/usr/bin/chromium';
+const chromiumPath = '/usr/bin/chromium-browser';
 
 function createNewClient() {
   client = new Client({
